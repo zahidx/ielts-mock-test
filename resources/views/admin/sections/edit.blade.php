@@ -1,0 +1,13 @@
+@extends('layouts.app')
+@section('title','Edit Section')
+@section('content')
+<div class="container-fluid"><div class="row">@include('admin.partials.sidebar')
+<div class="col-md-10 py-4 px-4"><div class="card border-0 shadow-sm"><div class="card-header bg-white fw-bold">Edit: {{ $section->title }}</div><div class="card-body">
+<form method="POST" action="{{ route('admin.sections.update',[$test,$section]) }}" enctype="multipart/form-data">@csrf @method('PUT')
+<div class="row mb-3"><div class="col-md-3"><label class="form-label">Type</label><input class="form-control" value="{{ ucfirst($section->type) }}" disabled></div><div class="col-md-3"><label class="form-label">Title *</label><input type="text" name="title" class="form-control" value="{{ $section->title }}" required></div><div class="col-md-3"><label class="form-label">Duration</label><input type="number" name="duration_minutes" class="form-control" value="{{ $section->duration_minutes }}" min="1" required></div><div class="col-md-3"><label class="form-label">Order</label><input type="number" name="order" class="form-control" value="{{ $section->order }}"></div></div>
+@if($section->type==='listening')<div class="mb-3"><label class="form-label">Replace Audio</label><input type="file" name="audio_file" class="form-control" accept="audio/*"><small class="text-muted">Current: {{ $section->content }}</small></div><div class="mb-3"><label class="form-label">Or path</label><input type="text" name="content" class="form-control" value="{{ $section->content }}"></div>
+@elseif($section->type==='reading')<div class="mb-3"><label class="form-label">Passage</label><textarea name="content" class="form-control" rows="15">{{ $section->content }}</textarea></div>
+@elseif($section->type==='writing')<div class="mb-3"><label class="form-label">Task 1</label><textarea name="content" class="form-control" rows="5">{{ $section->content }}</textarea></div><div class="mb-3"><label class="form-label">Task 2</label><textarea name="content_extra" class="form-control" rows="5">{{ $section->content_extra }}</textarea></div>
+@elseif($section->type==='speaking')<div class="mb-3"><label class="form-label">Prompts</label><textarea name="content" class="form-control" rows="8">{{ $section->content }}</textarea></div>@endif
+<button type="submit" class="btn btn-primary" style="background:#003366;border:none;">Save</button><a href="{{ route('admin.tests.show',$test) }}" class="btn btn-outline-secondary ms-2">Cancel</a></form></div></div></div></div></div>
+@endsection
