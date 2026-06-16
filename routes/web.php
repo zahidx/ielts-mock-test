@@ -10,6 +10,10 @@ Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
+Route::get('/run-seed', function () {
+    \Illuminate\Support\Facades\Artisan::call('db:seed', ['--force' => true]);
+    return 'Database seeded successfully! You can now log in.';
+});
 Route::middleware('auth')->group(function () {
     Route::get('/dashboard', [TestController::class, 'dashboard'])->name('user.dashboard');
     Route::post('/test/{test}/start', [TestController::class, 'startTest'])->name('test.start');
